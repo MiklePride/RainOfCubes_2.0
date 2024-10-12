@@ -10,10 +10,10 @@ public class Rain : MonoBehaviour
 
     private void Start()
     {
-        _coroutine = StartCoroutine(StartRain());
+        _coroutine = StartCoroutine(StartSpawn());
     }
 
-    private IEnumerator StartRain()
+    private IEnumerator StartSpawn()
     {
         var wait = new WaitForSeconds(_repeatRate);
 

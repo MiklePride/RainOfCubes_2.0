@@ -11,41 +11,23 @@ public class Stats
     public event Action<int> CreatedObjectsAmountChenged;
     public event Action<int> ActiveObjectsAmountChenged;
 
-    public int AmountObjectsSpawnedForAllTime
+    public void Update(int spawnedObjectsCount, int createdObjectsCount, int activeObjectsCount)
     {
-        get
+        if (_amountObjectsSpawnedForAllTime != spawnedObjectsCount)
         {
-            return _amountObjectsSpawnedForAllTime;
-        }
-        set
-        {
-            _amountObjectsSpawnedForAllTime = value;
+            _amountObjectsSpawnedForAllTime = spawnedObjectsCount;
             AmountObjectsSpawnedChenged?.Invoke(_amountObjectsSpawnedForAllTime);
         }
-    }
 
-    public int CreatedObjectsAmount
-    {
-        get
+        if (_createdObjectsAmount != createdObjectsCount)
         {
-            return _createdObjectsAmount;
-        }
-        set
-        {
-            _createdObjectsAmount = value;
+            _createdObjectsAmount = createdObjectsCount;
             CreatedObjectsAmountChenged?.Invoke(_createdObjectsAmount);
         }
-    }
 
-    public int ActiveObjectAmount
-    {
-        get
+        if(_activeObjectsAmount != activeObjectsCount)
         {
-            return _activeObjectsAmount;
-        }
-        set
-        {
-            _activeObjectsAmount = value;
+            _activeObjectsAmount = activeObjectsCount;
             ActiveObjectsAmountChenged?.Invoke(_activeObjectsAmount);
         }
     }

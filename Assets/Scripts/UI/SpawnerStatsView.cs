@@ -21,9 +21,11 @@ public class SpawnerStatsView : MonoBehaviour
 
     private void OnDestroy()
     {
-        _spawner.Stats.CreatedObjectsAmountChenged -= OnUpdateCreatedObjects;
-        _spawner.Stats.AmountObjectsSpawnedChenged -= OnUpdateSpawnedObjects;
-        _spawner.Stats.ActiveObjectsAmountChenged -= OnUpdateActiveObjects;
+        Stats stats = _spawner.GetStats();
+
+        stats.CreatedObjectsAmountChenged -= OnUpdateCreatedObjects;
+        stats.AmountObjectsSpawnedChenged -= OnUpdateSpawnedObjects;
+        stats.ActiveObjectsAmountChenged -= OnUpdateActiveObjects;
     }
 
     private void OnUpdateCreatedObjects(int createdCount)
@@ -41,11 +43,13 @@ public class SpawnerStatsView : MonoBehaviour
         _activeObjectsAmount.text = $"{_activeObjectsHeader} {activeObjectsCount}";
     }
 
-    public void Initialize()
+    private void Initialize()
     {
-        _spawner.Stats.CreatedObjectsAmountChenged += OnUpdateCreatedObjects;
-        _spawner.Stats.AmountObjectsSpawnedChenged += OnUpdateSpawnedObjects;
-        _spawner.Stats.ActiveObjectsAmountChenged += OnUpdateActiveObjects;
+        Stats stats = _spawner.GetStats();
+
+        stats.CreatedObjectsAmountChenged += OnUpdateCreatedObjects;
+        stats.AmountObjectsSpawnedChenged += OnUpdateSpawnedObjects;
+        stats.ActiveObjectsAmountChenged += OnUpdateActiveObjects;
 
         _nameText.text = _name;
         _createdObjectsAmount.text = _createdObjectsHeader;
