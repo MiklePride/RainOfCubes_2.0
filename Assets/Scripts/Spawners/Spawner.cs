@@ -8,8 +8,8 @@ public abstract class Spawner : MonoBehaviour
     protected ObjectPool<SpawnableObject> _pool;
     protected int _poolCapacity = 20;
     protected int _poolMaxSize = 20;
-
-    public Stats Stats;
+    protected int _spawnedElementsCount = 0;
+    protected Stats Stats;
 
     private void Awake()
     {
@@ -27,7 +27,7 @@ public abstract class Spawner : MonoBehaviour
 
     protected SpawnableObject OnCreate(SpawnableObject element)
     {
-        Stats.CreatedObjectsAmount++;
+        Stats.Update(_spawnedElementsCount, _pool.CountAll, _pool.CountActive);
 
         return Instantiate(element);
     }
@@ -36,15 +36,15 @@ public abstract class Spawner : MonoBehaviour
     {
         element.gameObject.SetActive(true);
         element.Returned += OnReturnToPool;
-        Stats.ActiveObjectAmount = _pool.CountActive;
-        Stats.AmountObjectsSpawnedForAllTime++;
+        _spawnedElementsCount++;
+        Stats.Update(_spawnedElementsCount, _pool.CountAll, _pool.CountActive);
     }
 
     protected void OnRelease(SpawnableObject element)
     {
         element.Returned -= OnReturnToPool;
         element.gameObject.SetActive(false);
-        Stats.ActiveObjectAmount = _pool.CountActive;
+        Stats.Update(_spawnedElementsCount, _pool.CountAll, _pool.CountActive);
     }
 
     protected virtual void OnReturnToPool(SpawnableObject element)
@@ -56,16 +56,16 @@ public abstract class Spawner : MonoBehaviour
     {
         Destroy(element.gameObject);
 
-        Stats.CreatedObjectsAmount = _pool.CountAll;
-    }
-
-    public void Initialize()
-    {
-        
+        Stats.Update(_spawnedElementsCount, _pool.CountAll, _pool.CountActive);
     }
 
     public void Spawn()
     {
         _pool.Get();
+    }
+
+    public Stats GetStats()
+    {
+        return Stats;
     }
 }
